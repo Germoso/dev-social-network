@@ -1,3 +1,4 @@
+import Head from "next/head"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { loginWithGithub } from "Firebase/client"
@@ -48,11 +49,15 @@ export default function Home() {
 
     return (
         <div className="relative w-full h-full flex flex-col gap-5 justify-center items-center">
-            <div className="flex flex-col items-center">
+            <Head>
+                <title>Login</title>
+                <meta name="description" content="App for share with developers"></meta>
+            </Head>
+            <div className="flex flex-col items-center justify-center">
                 <div className="w-52 h-52">
                     <Logo />
                 </div>
-                <span className="text-sm">Lorem ipsum dolor sit amet consectetur</span>
+                <span className="text-sm">Share, enjoy and help with other developers</span>
             </div>
             <div>
                 {status.description === "Loading" ? (

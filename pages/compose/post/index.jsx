@@ -1,3 +1,4 @@
+import Head from "next/head"
 import { useEffect, useState } from "react"
 import { useUser } from "hooks/useUser"
 import { useRouter } from "next/router"
@@ -76,6 +77,10 @@ const Index = () => {
 
     return (
         <div className="flex flex-col w-full h-full justify-between">
+            <Head>
+                <title>New post</title>
+                <meta name="description" content="App for share with developers"></meta>
+            </Head>
             <div className="pb-40 self-stretch grow">
                 <textarea
                     onChange={(evt) => {
@@ -102,7 +107,7 @@ const Index = () => {
                                 </label>
                                 <input type="file" name="file" id="file" onChange={handleUploadChange} hidden />
                             </div>
-                            {status.description === "loading" || postStatus === "loading" ? (
+                            {status.description === "loading" || postStatus.description === "loading" ? (
                                 <div className="w-10">
                                     <Loader />
                                 </div>

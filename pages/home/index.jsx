@@ -1,3 +1,4 @@
+import Head from "next/head"
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { getTimeline } from "../../Firebase/client"
@@ -24,6 +25,10 @@ const Index = () => {
 
     return (
         <Layout user={user} sort={sort} setSort={setSort}>
+            <Head>
+                <title>Home</title>
+                <meta name="description" content="App for share with developers"></meta>
+            </Head>
             <motion.section className="container mx-auto">
                 {timeline.map((data) => {
                     return <Post.Base data={data} key={data.id} />
