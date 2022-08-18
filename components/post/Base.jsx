@@ -72,7 +72,7 @@ export const Base = ({ data, detail }) => {
 
     const share = (e) => {
         e.stopPropagation()
-        navigator.clipboard.writeText(`http://localhost:3000/post/${id}`)
+        navigator.clipboard.writeText(`https://social-network-three-xi.vercel.app/post/${id}`)
     }
 
     const openPopup = (e) => {
