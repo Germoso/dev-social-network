@@ -23,7 +23,7 @@ const Post = ({ json, id, error }) => {
     }, [router, modal])
 
     return (
-        <Layout user={user} home>
+        <Layout user={user} home sortBar>
             <Head>
                 <title>Post|{id}</title>
                 <meta name="description" content="App for share with developers"></meta>
@@ -44,7 +44,7 @@ const Post = ({ json, id, error }) => {
 export const getServerSideProps = async ({ params }) => {
     const { id } = params
     try {
-        const res = await fetch(`http://localhost:3000/api/post/${id}`)
+        const res = await fetch(`https://social-network-three-xi.vercel.app/api/post/${id}`)
         console.log(res)
         if (res.ok) {
             const json = await res.json()

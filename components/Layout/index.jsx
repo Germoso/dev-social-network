@@ -9,7 +9,7 @@ import New from "components/icons/New"
 import Create from "components/icons/Create"
 import Home from "components/icons/Home"
 
-export const Layout = ({ children, user, home, sort, setSort }) => {
+export const Layout = ({ children, user, home, sort, setSort, sortBar }) => {
     const [createPopup, setCreatePopup] = useState(false)
     const router = useRouter()
 
@@ -26,7 +26,7 @@ export const Layout = ({ children, user, home, sort, setSort }) => {
     return (
         <div className="w-full flex flex-col gap-5 p-4  mb-20 bg-white h-full">
             <Navbar user={user} />
-            <Sort sort={sort} setSort={setSort} />
+            {!sortBar && <Sort sort={sort} setSort={setSort} />}
             {children}
             <div className="fixed bottom-6 right-0 px-6 flex justify-end gap-5 2xl:mx-20">
                 {home && (
