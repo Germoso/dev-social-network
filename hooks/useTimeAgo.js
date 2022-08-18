@@ -9,7 +9,7 @@ const DATE_UNITS = [
 
 const getTimeDiff = (timestamp) => {
     const now = Date.now() / 1000
-    const diff = now - timestamp.seconds
+    const diff = now - (timestamp.seconds || timestamp._seconds)
     for (const [unit, value] of DATE_UNITS) {
         if (diff > value) {
             const count = Math.floor(diff / value)
@@ -19,12 +19,12 @@ const getTimeDiff = (timestamp) => {
 }
 
 export const useTimeAgo = (timestamp) => {
-    const [timeAgo, setTimeAgo] = useState({ count: 0, unit: "" })
+    const [timeAgo, setTimeAgo] = useState({ count: 0, unit: "s" })
+    console.log(timeAgo)
+
     useEffect(() => {
         setTimeAgo(getTimeDiff(timestamp))
     }, [timestamp])
-    setInterval(() => {
-        setTimeAgo(getTimeDiff(timestamp))
-    }, 60000)
-    return timeAgo
+
+    return timeAgo ? timeAgo : { count: 0, unit: "NA" }
 }

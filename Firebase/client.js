@@ -2,8 +2,9 @@ import "firebase/app"
 import "firebase/auth"
 
 import { initializeApp } from "firebase/app"
-import { getFirestore, doc, setDoc, collection, getDocs, query } from "firebase/firestore"
-import { getAuth, GithubAuthProvider, onAuthStateChanged, signInWithPopup } from "firebase/auth"
+import { getFirestore, doc, setDoc, collection, getDocs, query, deleteDoc, orderBy, addDoc } from "firebase/firestore"
+import { getAuth, GithubAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth"
+import { getStorage, ref, uploadBytes } from "firebase/storage"
 
 const firebaseConfig = {
     apiKey: "AIzaSyBGyFTNwgSms7-WMlILbQpaVeJAWoRp54k",
@@ -16,6 +17,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
+const storage = getStorage()
 
 export const mapUser = (user) => {
     const { displayName, photoURL, uid } = user
@@ -24,9 +26,7 @@ export const mapUser = (user) => {
 
 export const preAuthUser = (setUser) => {
     onAuthStateChanged(auth, (user) => {
-        console.log(user)
         if (user) {
-            console.log("client")
             const currentUser = mapUser(user)
             setUser(currentUser)
         }
@@ -42,12 +42,11 @@ const firestore = getFirestore(app)
 const documento = doc(collection(firestore, "coleccion"))
 
 export const createPost = (post) => {
-    return setDoc(documento, post)
+    return addDoc(collection(firestore, "coleccion"), post)
 }
 
-const consulta = query(collection(firestore, "coleccion"))
-
-export const getTimeline = async () => {
+export const getTimeline = async (sort) => {
+    const consulta = query(collection(firestore, "coleccion"), orderBy(sort, "desc"))
     const coleccion = await getDocs(consulta)
     const data = []
     await coleccion.forEach((doc) => {
@@ -57,4 +56,21 @@ export const getTimeline = async () => {
         })
     })
     return await data
+}
+
+export const signout = () => {
+    return signOut(auth)
+}
+
+export const uploadImage = (file) => {
+    const fileRef = ref(storage, `images/${file.name}`)
+    return uploadBytes(fileRef, file)
+}
+
+export const deletePost = async (id) => {
+    deleteDoc(doc(firestore, "coleccion", id))
+}
+
+export const likePost = (id, likes) => {
+    setDoc(doc(firestore, "coleccion", id), { likes: [...likes] }, { merge: true })
 }
