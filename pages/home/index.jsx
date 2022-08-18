@@ -5,6 +5,7 @@ import { getTimeline } from "../../Firebase/client"
 import { useUser } from "hooks/useUser"
 import { Layout } from "components/Layout"
 import { Post } from "components/post"
+import Loading from "components/icons/Loader"
 
 const INITIAL_USER = {
     displayName: "",
@@ -13,7 +14,7 @@ const INITIAL_USER = {
 }
 
 const Index = () => {
-    const [timeline, setTimeline] = useState([])
+    const [timeline, setTimeline] = useState(null)
     const { user } = useUser(INITIAL_USER)
     const [sort, setSort] = useState("timeAgo")
 
@@ -30,9 +31,17 @@ const Index = () => {
                 <meta name="description" content="App for share with developers"></meta>
             </Head>
             <motion.section className="container mx-auto">
-                {timeline.map((data) => {
-                    return <Post.Base data={data} key={data.id} />
-                })}
+                {timeline ? (
+                    timeline.map((data) => {
+                        return <Post.Base data={data} key={data.id} />
+                    })
+                ) : (
+                    <div className="w-full h-56 flex items-center justify-center">
+                        <div className="w-16">
+                            <Loading />
+                        </div>
+                    </div>
+                )}
             </motion.section>
         </Layout>
     )
