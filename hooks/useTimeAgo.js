@@ -26,5 +26,5 @@ export const useTimeAgo = (timestamp) => {
         setTimeAgo(getTimeDiff(timestamp))
     }, [timestamp])
 
-    return timeAgo ? timeAgo : { count: 0, unit: "NA" }
+    return timeAgo ? timeAgo : { count: 1, unit: "s" }
 }

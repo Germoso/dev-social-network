@@ -24,11 +24,11 @@ export const Layout = ({ children, user, home, sort, setSort }) => {
     }
 
     return (
-        <div className="w-full flex flex-col gap-5 p-4 overflow-hidden mb-20">
+        <div className="w-full flex flex-col gap-5 p-4  mb-20 bg-white h-full">
             <Navbar user={user} />
             <Sort sort={sort} setSort={setSort} />
             {children}
-            <div className="fixed bottom-6 right-0 px-6 flex justify-end gap-5">
+            <div className="fixed bottom-6 right-0 px-6 flex justify-end gap-5 2xl:mx-20">
                 {home && (
                     <button className="w-14 h-14 rounded-full " onClick={goHome}>
                         <Home />

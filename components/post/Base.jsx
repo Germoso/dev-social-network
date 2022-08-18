@@ -75,11 +75,12 @@ export const Base = ({ data, detail }) => {
         navigator.clipboard.writeText(`http://localhost:3000/post/${id}`)
     }
 
-    const openPopup = () => {
+    const openPopup = (e) => {
+        e.stopPropagation()
         setShowPopup(true)
         setTimeout(() => {
             setShowPopup(false)
-        }, 2000)
+        }, 3000)
     }
 
     const openOptions = (e) => {
@@ -118,16 +119,16 @@ export const Base = ({ data, detail }) => {
             initial={{ opacity: 0, y: 100 }}
             transition={{ duration: 0.5 }}
             className="py-4 border-b cursor-pointer"
-            whileTap={
-                !detail && {
-                    scale: 0.9,
-                    transition: {
-                        type: "spring",
-                        damping: "14",
-                        stiffness: "600",
-                    },
-                }
-            }
+            // whileTap={
+            //     !detail && {
+            //         scale: 0.9,
+            //         transition: {
+            //             type: "spring",
+            //             damping: "14",
+            //             stiffness: "600",
+            //         },
+            //     }
+            // }
             onClick={postDetail}
         >
             <div className="flex justify-between items-center">

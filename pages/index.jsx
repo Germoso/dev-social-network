@@ -47,7 +47,7 @@ export default function Home() {
     }
 
     return (
-        <div className="relative w-full h-screen overflow-hidden flex flex-col gap-5 justify-center items-center">
+        <div className="relative w-full h-full flex flex-col gap-5 justify-center items-center">
             <div className="flex flex-col items-center">
                 <div className="w-52 h-52">
                     <Logo />
@@ -74,10 +74,11 @@ export default function Home() {
 
             {status.description === "Logged" && (
                 <motion.div
-                    className="absolute w-full h-screen flex flex-col gap-0  items-center left-0 top-0 bg-black text-white"
+                    className="absolute w-full h-full flex flex-col gap-0  items-center left-0 top-0 bg-black text-white"
                     animate={{
-                        x: ["75%", "0%"],
+                        opacity: 1,
                     }}
+                    initial={{ opacity: 0 }}
                     transition={{ duration: 0.5, type: "spring" }}
                 >
                     <div className="py-10">

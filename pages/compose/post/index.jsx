@@ -12,7 +12,7 @@ import { getDownloadURL } from "firebase/storage"
 import { Image } from "components/Image/Image"
 import { useCurrentUser } from "hooks/useCurrentUser"
 
-const IMAGE_STATUS = {
+const STATUS = {
     ERROR: Symbol("error"),
     NULL: Symbol("null"),
     LOADING: Symbol("loading"),
@@ -23,7 +23,8 @@ const Index = () => {
     const [modal, setModal] = useState(false)
     const [modalMessage, setModalMessage] = useState("")
     const currentUser = useCurrentUser().uid
-    const [status, setStatus] = useState(IMAGE_STATUS.NULL)
+    const [status, setStatus] = useState(STATUS.NULL)
+    const [postStatus, setPostStatus] = useState(STATUS.NULL)
     const { user } = useUser(undefined)
     const [message, setMessage] = useState("")
     const [imgURL, setImgURL] = useState("")
@@ -55,11 +56,11 @@ const Index = () => {
 
     const handleUploadChange = (evt) => {
         const file = evt.target.files[0]
-        setStatus(IMAGE_STATUS.LOADING)
+        setStatus(STATUS.LOADING)
         uploadImage(file).then(({ ref }) => {
             getDownloadURL(ref).then((URL) => {
                 setImgURL(URL)
-                setStatus(IMAGE_STATUS.LOADED)
+                setStatus(STATUS.LOADED)
             })
         })
     }
@@ -70,16 +71,17 @@ const Index = () => {
 
     const addNewPost = () => {
         setPost({ imgURL, message, ...user, timeAgo: serverTimestamp(), likes: [] })
+        setPostStatus(STATUS.LOADING)
     }
 
     return (
-        <div className="flex flex-col w-full h-screen justify-between">
+        <div className="flex flex-col w-full h-full justify-between">
             <div className="pb-40 self-stretch grow">
                 <textarea
                     onChange={(evt) => {
                         handleMessageChange(evt)
                     }}
-                    className="w-full h-1/2 p-3 resize-none"
+                    className="w-full h-60 p-3 resize-none xl:h-80 2xl:h-96"
                     placeholder="Create your post..."
                 ></textarea>
                 {imgURL && (
@@ -88,9 +90,9 @@ const Index = () => {
                     </div>
                 )}
             </div>
-            <div className="fixed bottom-0 left-0 w-full bg-white">
+            <div className="fixed bottom-0 left-0 w-full bg-transparent">
                 <div>
-                    <div className="flex justify-between p-3">
+                    <div className="flex justify-between p-3 2xl:mx-20">
                         <div className="flex items-center">
                             <div className="cursor-pointer">
                                 <label htmlFor="file">
@@ -100,15 +102,17 @@ const Index = () => {
                                 </label>
                                 <input type="file" name="file" id="file" onChange={handleUploadChange} hidden />
                             </div>
-                            {status.description === "loading" && (
+                            {status.description === "loading" || postStatus === "loading" ? (
                                 <div className="w-10">
                                     <Loader />
                                 </div>
+                            ) : (
+                                ""
                             )}
                         </div>
-                        <div className="w-full flex justify-end gap-3 ">
+                        <div className="w-full flex justify-end gap-3  ">
                             <Button
-                                className={"border-2 border-red-500"}
+                                className={"border-2 border-red-500 bg-white sm:bg-transparent"}
                                 onClick={() => {
                                     router.replace("/home")
                                 }}
@@ -116,7 +120,10 @@ const Index = () => {
                                 Cancel
                             </Button>
                             <Button
-                                className={"border-2 border-black"}
+                                className={
+                                    "border-2 border-black bg-white sm:bg-transparent disabled:border-gray-400 disabled:text-gray-400"
+                                }
+                                disabled={status.description == "loading" || postStatus.description == "loading"}
                                 onClick={() => {
                                     addNewPost()
                                 }}
